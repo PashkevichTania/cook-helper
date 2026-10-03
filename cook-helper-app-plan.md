@@ -1,4 +1,4 @@
-# Smart Fridge Recipe App — Product & Technical Plan
+# Cook Helper Recipe App — Product & Technical Plan
 
 ## 1. Product Vision
 
