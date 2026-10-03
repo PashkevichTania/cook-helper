@@ -1,5 +1,34 @@
 # Cook Helper Recipe App — Product & Technical Plan
 
+## Confirmed First-Version Scope (2026-10-03)
+
+This section takes precedence over broader suggestions and optional features elsewhere in this document.
+
+- **Audience:** a personal website accessible through a public link, without authentication or a database. Inventory and preferences remain local to each browser; the public link does not provide shared inventory or synchronization.
+- **Language:** Russian and English UI with a persisted language switch. Provider recipes remain in their original language; automatic recipe translation is not required.
+- **First version:** fridge inventory, recipe discovery based on fridge contents, recipe details needed to cook a selected meal, and a simple AI chat with recommendations.
+- **Ingredient matching:** check ingredient presence only. Quantities and serving sizes do not determine whether a recipe can be cooked. Communicate this in the UI; users check required amounts themselves.
+- **Pantry assumptions:** only water and salt are always available. Every other ingredient, including oil and pepper, must be present in inventory to count as available. Do not use a provider's broader pantry exclusion as the final matching rule.
+- **Expiration:** expiration dates are optional. "Expiring soon" means today through three calendar days ahead, inclusive, using the user's local date. Products without dates remain eligible and have no expiration priority. Products with an expiration date before today remain visible in the fridge with a warning, but are excluded from recipe search inputs, available-ingredient matching, and AI cooking recommendations. A product expiring today is expiring soon, not already expired. Apply this rule using the current local date when preparing each search or AI request.
+- **Product entry:** accept arbitrary names and allow saving even if a dictionary or AI cannot normalize them. Normalization must not block saving. Preserve the original name; normalized API names are optional, and unrecognized ingredients must not silently count as confirmed matches.
+- **AI chat:** the assistant receives current fridge contents and may invent recipes independently of Spoonacular. Simple text recommendations are sufficient. Structured recipe cards, streaming, and linking AI suggestions to provider recipes are deferred.
+- **After cooking:** users manually edit or delete inventory items. No automatic deduction or "Cooked" workflow in the first version.
+- **Backend:** use Vercel Functions with server-side provider keys. The public proxy should expose only the required operations, validate input, and bound request size and provider usage. Hiding keys alone does not restrict public proxy usage.
+- **Deferred:** independent text search and browsing, meal-type and dietary filters, favorites, advanced expiration ranking, structured AI cards, shopping lists, automatic inventory deduction, accounts, synchronization, and visual extras such as drag and drop or animated doors.
+- **Cost:** approximately zero running cost is a target. Verify provider availability and current free-tier limits before integration, and show useful errors when quotas are exhausted.
+
+### First-Version Delivery Order
+
+1. Foundation: React/TypeScript/Vite, routing, styling, local state, and Russian/English UI with language persistence.
+2. Fridge: add/edit/delete arbitrary products, optional quantity and expiration date, zones, local persistence, visual inventory, and expiration indicators.
+3. Recipes: Vercel proxy, provider adapter, explicit fridge-based search, presence-only matching with only salt/water assumed, result cards, and recipe details. Avoid unnecessary requests and handle missing provider data and quota errors.
+4. AI: Vercel proxy, provider adapter, basic chat receiving the current inventory, and text cooking recommendations in the selected UI language.
+5. Essential polish: responsive layout, accessible controls, loading/empty/error states, and verification of local persistence and the complete fridge-to-recipe flow.
+
+The broader phase list below is a roadmap, not a requirement to ship all eight phases in the first version.
+
+---
+
 ## 1. Product Vision
 
 Build a personal web app that answers one core question:
@@ -89,7 +118,7 @@ Example input:
 ```text
 ingredients=chicken,tomato,cheese,onion
 ranking=1
-ignorePantry=true
+ignorePantry=false
 number=10
 ```
 
@@ -311,7 +340,7 @@ interface Product {
   id: string;
 
   name: string;
-  apiName: string;
+  apiName?: string; // Optional: arbitrary product names can be saved without normalization.
 
   type: ProductType;
   emoji: string;
@@ -405,7 +434,7 @@ Recommended strategy:
 
 1. Check local product dictionary.
 2. If the product exists, use the local mapping.
-3. Otherwise ask the AI once.
+3. Otherwise optionally ask the AI once; failure must never block saving.
 4. Store the normalized result locally.
 5. Reuse it in the future.
 
@@ -515,7 +544,7 @@ Provide preset actions such as:
 
 ### Structured AI Response
 
-Prefer structured data instead of plain text only.
+Deferred beyond the first version: prefer structured data instead of plain text only. The first version uses simple text chat.
 
 Example:
 
