@@ -1,0 +1,124 @@
+.ui-lab {
+  display: grid;
+  gap: 24px;
+}
+.ui-lab .page-heading {
+  margin-bottom: 0;
+}
+.ui-lab-panel {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--card);
+  color: var(--card-foreground);
+  min-width: 0;
+}
+.ui-lab-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-block: 24px;
+}
+.ui-lab-example {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+}
+.ui-lab code {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.ui-lab-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.ui-lab-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin-block: 24px;
+}
+.ui-lab label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+.ui-lab input:not([type='checkbox']):not([type='range']),
+.ui-lab select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 12px;
+  background: var(--background);
+  color: var(--foreground);
+}
+.ui-lab input:disabled {
+  opacity: 0.5;
+}
+.ui-lab input[aria-invalid='true'] {
+  border-color: var(--destructive);
+}
+.ui-lab-fields small {
+  color: var(--destructive);
+}
+.ui-lab .ui-lab-check {
+  flex-direction: row;
+  align-items: center;
+}
+.ui-lab-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  margin-block: 24px;
+}
+.ui-lab-toolbar label:first-child {
+  flex: 1 1 220px;
+}
+.ui-lab-toolbar input[type='range'] {
+  width: 180px;
+  accent-color: var(--primary);
+}
+.ui-lab-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.ui-lab-icon {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 0;
+}
+.ui-lab-icon-preview {
+  height: 112px;
+  display: grid;
+  place-items: center;
+  background: #f4f6f5;
+  border-radius: 8px;
+}
+.ui-lab-icon figcaption {
+  margin-top: 12px;
+}
+.ui-lab-icon small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  .ui-lab-panel {
+    padding: 16px;
+  }
+  .ui-lab-icons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

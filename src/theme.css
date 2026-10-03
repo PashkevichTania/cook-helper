@@ -1,0 +1,361 @@
+/* Shared theme controls and the Cook Helper dark palette. */
+:root {
+  color-scheme: light;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid #e0e7e5;
+  border-radius: 9px;
+  background: #fff;
+  color: #253c40;
+  font-size: 23px;
+}
+.theme-toggle:hover {
+  background: #e8f6f7;
+}
+:root.dark {
+  color-scheme: dark;
+  color: #e2eeea;
+  background: #111c1b;
+  --background: #111c1b;
+  --foreground: #e2eeea;
+  --card: #1b2927;
+  --card-foreground: #e2eeea;
+  --popover: #1b2927;
+  --popover-foreground: #e2eeea;
+  --primary: #26afca;
+  --primary-foreground: #123c45;
+  --accent: #f29e38;
+  --accent-foreground: #152421;
+  --secondary: #263b35;
+  --secondary-foreground: #e2eeea;
+  --muted: #263b35;
+  --muted-foreground: #adbbb4;
+  --border: #344a43;
+  --input: #344a43;
+  --ring: #63cddd;
+  --surface: #1b2927;
+  --surface-soft: #22362f;
+  --line: #344a43;
+  --text-muted: #adbbb4;
+  --text-accent: #7ed3cb;
+}
+.dark body {
+  background: var(--background);
+  color: var(--foreground);
+}
+.dark
+  :is(
+    .site-header,
+    .stats > div,
+    .fridge-panel,
+    .inventory-panel,
+    .secondary-button,
+    .context-panel,
+    .recipe-card,
+    .chat-panel,
+    .product-dialog,
+    .catalog-options,
+    .drag-preview,
+    .theme-toggle
+  ) {
+  background: var(--surface);
+  color: var(--foreground);
+  border-color: var(--line);
+}
+.dark :is(input, select, .chat-composer textarea) {
+  background: #152421;
+  color: var(--foreground);
+  border-color: var(--line);
+}
+.dark :is(input, textarea)::placeholder {
+  color: var(--text-muted);
+}
+.dark
+  :is(
+    .language-switch,
+    .pantry-note,
+    .product-row,
+    .freshness-list button,
+    footer,
+    .recipe-ingredients li,
+    .chat-composer,
+    .chat-context li
+  ) {
+  border-color: var(--line);
+}
+.dark
+  :is(
+    .brand small,
+    nav a,
+    .subtitle,
+    .stats div div span,
+    .muted,
+    .filter-tabs button,
+    .empty-state p,
+    .pantry-note p,
+    .product-info small,
+    .expiry-badge,
+    .cook-card > p:not(.eyebrow),
+    .freshness-card p,
+    footer,
+    .optional,
+    .upcoming-panel p,
+    .recipe-no-image,
+    .recipe-match,
+    .recipe-attribution,
+    .search-intro,
+    .chat-welcome p,
+    .composer-actions small,
+    .chat-caption,
+    .chat-context small,
+    .catalog-options small,
+    .zone-empty,
+    .empty-shelf,
+    .shelf-label
+  ) {
+  color: var(--text-muted);
+}
+.dark
+  :is(
+    .eyebrow,
+    .cook-card .eyebrow,
+    .back-link,
+    .recipe-loading,
+    .chat-message strong,
+    .chat-thinking,
+    .temperature,
+    .brand-mark,
+    .cabinet-label,
+    .cabinet-label span,
+    .zone-heading,
+    .door-top,
+    .fridge-brand
+  ) {
+  color: var(--text-accent);
+}
+.dark :is(nav a.active, .filter-tabs button.selected) {
+  background: #24433e;
+  color: #91e2d6;
+}
+.dark
+  :is(
+    nav a:hover,
+    .secondary-button:hover,
+    .theme-toggle:hover,
+    .product-row:hover,
+    .catalog-options li:hover,
+    .catalog-options li[aria-selected='true'],
+    .quick-prompts button:hover,
+    .shelf-product:hover
+  ) {
+  background: #2b443c;
+}
+.dark .language-switch button[aria-pressed='true'] {
+  background: #8ed9cd;
+  color: #152421;
+}
+.dark
+  :is(
+    .brand-mark,
+    .temperature,
+    .empty-art,
+    .empty-art span,
+    .cook-card,
+    .upcoming-panel,
+    .ingredient-chips span,
+    .recipe-meta span,
+    .chat-context,
+    .quick-prompts button,
+    .chat-message,
+    .icon-button,
+    .recipe-no-image
+  ) {
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+.dark .chat-message.user {
+  background: #203c47;
+}
+.dark .cyan {
+  background: #203c47;
+  color: #84d6e6;
+}
+.dark .green {
+  background: #2b402d;
+  color: #b2d59a;
+}
+.dark .peach {
+  background: #493722;
+  color: #f2c27e;
+}
+.dark :is(.product-emoji, .category-dairy, .category-drink, .category-frozen) {
+  background: #2a3e3c;
+}
+.dark :is(.category-meat, .category-fish) {
+  background: #44302d;
+}
+.dark :is(.expiry-badge.soon, .unresolved-note, .chat-error) {
+  background: #463523;
+  color: #f2c27e;
+}
+.dark :is(.expiry-badge.expired, .expired-note, .error-message) {
+  background: #452b33;
+  color: #ffacb8;
+}
+.dark :is(.delete-button, .fridge-item-edit b, .shelf-product b) {
+  color: #ffacb8;
+}
+.dark :is(.missing-list, .ingredient-no, .freshness-list small) {
+  color: #e5be89;
+}
+.dark .ingredient-yes {
+  color: #a2d5ae;
+}
+.dark .ready-badge {
+  background: #284332;
+  color: #a2d5ae;
+}
+.dark .recipe-skeleton {
+  background: linear-gradient(120deg, #243830, #30473e, #243830);
+}
+.dark .product-dialog::backdrop {
+  background: #050c0db3;
+}
+.dark :focus-visible {
+  outline-color: #7cd8e1;
+}
+.dark .recipe-card h2 a:hover {
+  color: #7cd8e1;
+}
+
+/* Keep the illustrated fridge and pantry dimensional in the dark palette. */
+.dark :is(.fridge-illustration, .fridge-cabinet) {
+  background: linear-gradient(100deg, #344d44, #243a32);
+  border-color: #506b5d;
+  box-shadow: inset 3px 0 0 #466052;
+}
+.dark :is(.shelves, .cabinet-liner) {
+  background: #1c3027;
+  border-color: #425e4e;
+}
+.dark :is(.shelf, .storage-zone) {
+  border-bottom-color: #425e4e;
+}
+.dark .storage-drawer {
+  background: linear-gradient(#2b4230, #213928);
+  border-bottom-color: #49674b;
+}
+.dark .freezer-compartment {
+  background: #203b42;
+  border-color: #436772;
+}
+.dark .fridge-door {
+  background: linear-gradient(
+    95deg,
+    #263d30,
+    #3c5343 14%,
+    #304936 86%,
+    #213a2a
+  );
+  border-color: #4a6550;
+  box-shadow:
+    inset 0 0 0 5px #3e5846,
+    5px 5px 0 #1a2b20;
+}
+.dark .storage-door {
+  background: #2a4131;
+}
+.dark .door-rails i {
+  background: linear-gradient(#435c3c55, #68855d6b);
+  border-color: #486643;
+  border-top-color: #74916b;
+  border-bottom-color: #486643;
+}
+.dark .door-handle {
+  background: linear-gradient(90deg, #799081, #3e5946);
+  border-color: #526c54;
+}
+.dark .fridge-item {
+  background: #354b40;
+}
+.dark .drag-grip {
+  background: #44614e;
+  color: #d4e7d9;
+}
+.dark .pantry-cabinet {
+  background: linear-gradient(90deg, #483b2c, #66533b 6%, #5b4832 95%, #3d3023);
+  border-color: #7b6347;
+  box-shadow:
+    5px 7px 0 #30271e,
+    0 15px 22px -18px #100d09;
+}
+.dark .pantry-countertop {
+  background: linear-gradient(#8a7963, #67553f);
+  border-color: #9b866a;
+}
+.dark .pantry-cabinet > h3 {
+  color: #e4cba9;
+}
+.dark .pantry-drawer {
+  background: #4c3925;
+  border-color: #7b6347;
+}
+.dark .pantry-drawer .storage-zone {
+  background: #352d22;
+}
+.dark .pantry-drawer .zone-heading {
+  color: #e4cba9;
+}
+.dark .pantry-drawer .zone-empty {
+  color: #c5b59d;
+}
+.dark .pantry-drawer .fridge-item {
+  background: #514333;
+}
+.dark .pantry-drawer .drag-grip {
+  background: #6a553b;
+  color: #f0dfc3;
+}
+.dark .drawer-front {
+  background: linear-gradient(#7d6545, #5a452e);
+  border-top-color: #947957;
+}
+.dark .cabinet-plinth {
+  background: #3d3023;
+}
+.dark
+  :is(
+    .fridge-item.expired,
+    .pantry-drawer .fridge-item.expired,
+    .shelf-product.expired
+  ) {
+  background: #58323d;
+}
+.dark :is(.drop-active, .pantry-drawer .drop-active) {
+  background: #295140;
+  border: 2px dashed #79d6b8;
+  box-shadow: inset 0 0 0 3px #79d6b833;
+}
+@media (max-width: 420px) {
+  .header-actions {
+    gap: 6px;
+  }
+  .site-header {
+    column-gap: 8px;
+    padding-inline: 14px;
+  }
+  .brand {
+    gap: 8px;
+  }
+}

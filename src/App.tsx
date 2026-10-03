@@ -1,122 +1,159 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import './App.css';
+import './theme.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Link,
+  Navigate,
+  NavLink,
+  Route,
+  Routes,
+} from 'react-router-dom';
 
+import { usePreferences, useStorageStatus } from './entities/product/store';
+import { ChefPage } from './pages/ChefPage';
+import { FridgePage } from './pages/FridgePage';
+import { MyRecipePage } from './pages/MyRecipePage';
+import { MyRecipesPage } from './pages/MyRecipesPage';
+import { RecipePage } from './pages/RecipePage';
+import { RecipesPage } from './pages/RecipesPage';
+import { UiPage } from './pages/UiPage';
+import { useTranslation } from './shared/i18n';
+import { useTheme } from './shared/useTheme';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: 300_000, refetchOnWindowFocus: false, retry: false },
+  },
+});
+
+function Shell() {
+  const { t, language } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
+  const setLanguage = usePreferences((state) => state.setLanguage);
+  const storageError = useStorageStatus((state) => state.error);
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.title = 'Cook Helper';
+  }, [language]);
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+      <header className="site-header">
+        <Link to="/fridge" className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            c<span>✦</span>
+          </span>
+          <span>
+            cook<span className="brand-light">helper</span>
+            <small>{t.tagline}</small>
+          </span>
+        </Link>
+        <nav
+          aria-label={
+            language === 'ru' ? 'Основная навигация' : 'Main navigation'
+          }
         >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <NavLink to="/fridge">
+            <span aria-hidden="true">▦</span>
+            {t.fridge}
+          </NavLink>
+          <NavLink to="/recipes">
+            <span aria-hidden="true">♧</span>
+            {t.recipes}
+          </NavLink>
+          <NavLink to="/chef">
+            <span aria-hidden="true">✦</span>
+            {t.chef}
+          </NavLink>
+          <NavLink to="/my-recipes">
+            {language === 'ru' ? 'Мои рецепты' : 'My recipes'}
+          </NavLink>
+          <NavLink to="/ui">UI Lab</NavLink>
+        </nav>
+        <div className="header-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-pressed={theme === 'dark'}
+            aria-label={
+              language === 'ru'
+                ? '\u0422\u0451\u043c\u043d\u0430\u044f \u0442\u0435\u043c\u0430'
+                : 'Dark theme'
+            }
+            title={
+              language === 'ru'
+                ? '\u0422\u0451\u043c\u043d\u0430\u044f \u0442\u0435\u043c\u0430'
+                : 'Dark theme'
+            }
+          >
+            <span aria-hidden="true">
+              {theme === 'dark' ? '\u263e' : '\u2600'}
+            </span>
+          </button>
+          <div
+            className="language-switch"
+            role="group"
+            aria-label={language === 'ru' ? 'Язык' : 'Language'}
+          >
+            <button
+              aria-pressed={language === 'ru'}
+              onClick={() => setLanguage('ru')}
+            >
+              RU
+            </button>
+            <button
+              aria-pressed={language === 'en'}
+              onClick={() => setLanguage('en')}
+            >
+              EN
+            </button>
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      </header>
+      <main>
+        {storageError && (
+          <p role="alert" className="error-message">
+            {t.storageError}
+          </p>
+        )}
+        <Routes>
+          <Route path="/" element={<Navigate to="/fridge" replace />} />
+          <Route path="/fridge" element={<FridgePage />} />
+          <Route path="/recipes" element={<RecipesPage />} />
+          <Route path="/recipes/:id" element={<RecipePage />} />
+          <Route path="/my-recipes" element={<MyRecipesPage />} />
+          <Route path="/my-recipes/:id" element={<MyRecipePage />} />
+          <Route path="/chef" element={<ChefPage />} />
+          <Route path="/ui" element={<UiPage />} />
+          <Route
+            path="*"
+            element={
+              <section className="empty-state">
+                <h1>{t.notFound}</h1>
+                <Link to="/fridge">{t.back}</Link>
+              </section>
+            }
+          />
+        </Routes>
+      </main>
+      <footer>
+        <span>
+          cookhelper <span className="footer-dot">·</span> {t.phase}
+        </span>
+        <span>◉ {storageError ? t.storageUnavailable : t.local}</span>
+      </footer>
     </>
-  )
+  );
 }
-
-export default App
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Shell />
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+}
