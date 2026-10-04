@@ -1,6 +1,9 @@
 import { usePreferences } from '../entities/product/store';
 
 const ru = {
+  selectAll: 'Выбрать все',
+  excludeAll: 'Исключить все',
+  selectedIngredients: 'Выбрано ингредиентов',
   autoCategory: 'Определить автоматически',
   cookEyebrow: 'ПРИГОТОВИМ ЧТО-НИБУДЬ ВКУСНОЕ',
   storageUnavailable: 'Сохранение недоступно',
@@ -107,6 +110,9 @@ const ru = {
   pack: 'уп.',
 };
 const en: Record<keyof typeof ru, string> = {
+  selectAll: 'Select all',
+  excludeAll: 'Exclude all',
+  selectedIngredients: 'Selected ingredients',
   autoCategory: 'Detect automatically',
   cookEyebrow: 'COOK SOMETHING GOOD',
   storageUnavailable: 'Storage unavailable',

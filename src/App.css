@@ -208,7 +208,7 @@ h1 {
 }
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
   margin-bottom: 30px;
   max-width: 100%;
@@ -2048,4 +2048,82 @@ button:disabled {
 @media (max-width: 760px) {
   .site-header nav { justify-content: flex-start; overflow-x: auto; }
   .site-header nav a { flex: 0 0 auto; white-space: nowrap; }
+}
+
+/* Keep long inventories inside their panels. */
+.inventory-panel .product-list {
+  max-height: min(60vh, 560px);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+.category-filter { display: grid; gap: 6px; font-size: 12px; }
+.category-filter select { width: 100%; min-width: 0; padding: 9px; border: 1px solid #d5e2d5; border-radius: 8px; background: var(--background, white); color: inherit; }
+.selection-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.chat-context .selection-actions .secondary-button { margin: 0; }
+.ingredient-selection { min-width: 0; }
+.ingredient-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 8px;
+  max-height: 310px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 4px;
+}
+.ingredient-option {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  max-width: 100%;
+  min-width: 0;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid #d5e2d5;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.ingredient-option > span {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ingredient-option:has(input:checked) { background: #e0edda; color: #304c2b; }
+.ingredient-option input[type='checkbox'] {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  accent-color: #52744a;
+}
+.ingredient-option:focus-within { outline: 2px solid #52744a; outline-offset: 2px; }
+
+.ingredient-option > .food-icon,
+.ingredient-option > .food-icon-fallback {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+}
+.ingredient-option > .food-icon-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
+.stat-icon { flex-shrink: 0; }
+.expired-stat { background: #fde9e8; color: #b43d43; }
+@media (max-width: 1000px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .stats .stat-icon { display: grid; width: 32px; height: 32px; border-radius: 9px; font-size: 18px; }
+  .stats .stat-icon svg { width: 20px; height: 20px; }
 }

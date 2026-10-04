@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+import { useIngredientSelection } from '../product/selection';
 import { useFridgeStore, usePreferences } from '../product/store';
 import {
   chatInventory,
@@ -40,7 +41,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
     const input = chatRequestSchema.safeParse({
       messages,
       language: usePreferences.getState().language,
-      ...chatInventory(useFridgeStore.getState().products),
+      ...chatInventory(
+        useFridgeStore
+          .getState()
+          .products.filter(
+            (product) =>
+              !useIngredientSelection
+                .getState()
+                .excludedIds.includes(product.id)
+          )
+      ),
     });
     if (!input.success) {
       set({ error: 'INVALID_REQUEST', draft: prompt });

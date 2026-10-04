@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import { useChatStore } from '../entities/chat/store';
 import { availableProducts } from '../entities/product/model';
-import { ProductIcon } from '../entities/product/ProductIcon';
 import { useFridgeStore } from '../entities/product/store';
 import { useChatTranslation } from '../shared/chat-i18n';
 import { useTranslation } from '../shared/i18n';
+import { IngredientSelection } from '../shared/IngredientSelection';
 import { useToday } from '../shared/useToday';
 
 export function ChefPage() {
@@ -131,21 +131,7 @@ export function ChefPage() {
         <aside className="chat-context">
           <h2>{c.context}</h2>
           {available.length ? (
-            <ul>
-              {available.map((p) => (
-                <li key={p.id}>
-                  <span>
-                    <ProductIcon product={p} /> {p.name}
-                  </span>
-                  <small>
-                    {p.quantity !== undefined
-                      ? `${p.quantity} ${p.unit ? t[p.unit] : ''}`
-                      : ''}
-                    {p.expiresAt ? ` · ${t.until} ${p.expiresAt}` : ''}
-                  </small>
-                </li>
-              ))}
-            </ul>
+            <IngredientSelection products={available} />
           ) : (
             <p className="muted">{c.empty}</p>
           )}

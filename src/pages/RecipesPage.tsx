@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { Product } from '../entities/product/model';
+import { useIngredientSelection } from '../entities/product/selection';
 import { useFridgeStore } from '../entities/product/store';
-import { RecipeClientError,recipeProvider } from '../entities/recipe/api';
+import { RecipeClientError, recipeProvider } from '../entities/recipe/api';
 import { cookingInventory, searchKey } from '../entities/recipe/matching';
 import { ProductForm } from '../features/fridge/ProductForm';
 import { useTranslation } from '../shared/i18n';
+import { IngredientSelection } from '../shared/IngredientSelection';
 import { useRecipeTranslation } from '../shared/recipe-i18n';
 import { useToday } from '../shared/useToday';
 
@@ -16,7 +18,15 @@ export function RecipesPage() {
   const { r, errorText } = useRecipeTranslation();
   const products = useFridgeStore((state) => state.products);
   const now = useToday();
-  const inventory = cookingInventory(products, now);
+  const excludedIds = useIngredientSelection((state) => state.excludedIds);
+  const fullInventory = cookingInventory(products, now);
+  const selectable = products.filter(
+    (product) => cookingInventory([product], now).ingredients.length > 0
+  );
+  const inventory = cookingInventory(
+    products.filter((product) => !excludedIds.includes(product.id)),
+    now
+  );
   const [readyOnly, setReadyOnly] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
   const canSearch =
@@ -54,22 +64,18 @@ export function RecipesPage() {
       </section>
       <section className="context-panel recipe-context">
         <h2>{r.ingredients}</h2>
-        <div className="ingredient-chips">
-          {inventory.ingredients.map((name) => (
-            <span key={name}>{name}</span>
-          ))}
-        </div>
+        <IngredientSelection products={selectable} />
         <p className="muted">{r.note}</p>
-        {inventory.excludedCount > 0 && (
+        {fullInventory.excludedCount > 0 && (
           <p className="expired-note">
-            {r.excluded} {inventory.excludedCount}
+            {r.excluded} {fullInventory.excludedCount}
           </p>
         )}
-        {inventory.unresolved.length > 0 && (
+        {fullInventory.unresolved.length > 0 && (
           <div className="unresolved-note">
             <p>{r.unknown}</p>
             <div className="ingredient-chips">
-              {inventory.unresolved.map((product) => (
+              {fullInventory.unresolved.map((product) => (
                 <button
                   key={product.id}
                   className="secondary-button"

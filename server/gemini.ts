@@ -36,7 +36,10 @@ CURRENT INVENTORY (JSON data): ${JSON.stringify(fridge)}`,
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.text }],
     })),
-    generationConfig: { maxOutputTokens: 3000 },
+    generationConfig: {
+      maxOutputTokens: 3000,
+      responseModalities: ['TEXT'],
+    },
   };
 }
 const responseSchema = z.object({

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import {
   availableProducts,
+  categories,
   expirationStatus,
   localDate,
   type Product,
@@ -18,7 +19,10 @@ export function FridgePage() {
   const { t, language } = useTranslation();
   const products = useFridgeStore((state) => state.products);
   const now = useToday();
-  const [editing, setEditing] = useState<Product | { initialZone: Product['fridgeZone'] } | null>(null);
+  const [editing, setEditing] = useState<
+    Product | { initialZone: Product['fridgeZone'] } | null
+  >(null);
+  const [category, setCategory] = useState<Product['type'] | 'all'>('all');
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<'all' | 'soon' | 'expired'>('all');
   const soon = products.filter(
@@ -32,7 +36,8 @@ export function FridgePage() {
       item.name
         .toLocaleLowerCase()
         .includes(query.trim().toLocaleLowerCase()) &&
-      (filter === 'all' || expirationStatus(item.expiresAt, now) === filter)
+      (filter === 'all' || expirationStatus(item.expiresAt, now) === filter) &&
+      (category === 'all' || item.type === category)
   );
   function expiryLabel(product: Product) {
     const status = expirationStatus(product.expiresAt, now);
@@ -49,7 +54,10 @@ export function FridgePage() {
           <h1>{t.title}</h1>
           <p className="subtitle">{t.subtitle}</p>
         </div>
-        <button className="primary-button" onClick={() => setEditing({ initialZone: 'middleShelf' })}>
+        <button
+          className="primary-button"
+          onClick={() => setEditing({ initialZone: 'middleShelf' })}
+        >
           <span aria-hidden="true">＋</span> {t.add}
         </button>
       </section>
@@ -73,6 +81,27 @@ export function FridgePage() {
           <div>
             <strong>{soon.length}</strong>
             <span>{t.soon}</span>
+          </div>
+        </div>
+        <div>
+          <span className="stat-icon expired-stat" aria-hidden="true">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m10.3 4-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0Z" />
+              <path d="M12 9v5M12 17h.01" />
+            </svg>
+          </span>
+          <div>
+            <strong>{expired.length}</strong>
+            <span>{t.expired}</span>
           </div>
         </div>
       </div>
@@ -122,6 +151,22 @@ export function FridgePage() {
                 {t.expired} <span>{expired.length}</span>
               </button>
             </div>
+            <label className="category-filter">
+              {t.category}
+              <select
+                value={category}
+                onChange={(event) =>
+                  setCategory(event.target.value as Product['type'] | 'all')
+                }
+              >
+                <option value="all">{t.all}</option>
+                {categories.map((type) => (
+                  <option key={type} value={type}>
+                    {t[type]}
+                  </option>
+                ))}
+              </select>
+            </label>
             <input
               className="search-input"
               type="search"
@@ -152,6 +197,7 @@ export function FridgePage() {
                 className="secondary-button"
                 onClick={() => {
                   setFilter('all');
+                  setCategory('all');
                   setQuery('');
                 }}
               >
@@ -159,7 +205,12 @@ export function FridgePage() {
               </button>
             </div>
           ) : (
-            <div className="product-list">
+            <div
+              className="product-list"
+              role="region"
+              aria-label={t.inventory}
+              tabIndex={0}
+            >
               {filtered.map((product) => (
                 <button
                   key={product.id}
@@ -244,7 +295,9 @@ export function FridgePage() {
       {editing && (
         <ProductForm
           product={'initialZone' in editing ? undefined : editing}
-          initialZone={'initialZone' in editing ? editing.initialZone : undefined}
+          initialZone={
+            'initialZone' in editing ? editing.initialZone : undefined
+          }
           onClose={() => setEditing(null)}
         />
       )}

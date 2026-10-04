@@ -68,9 +68,37 @@ function Shell() {
             {t.chef}
           </NavLink>
           <NavLink to="/my-recipes">
+            <svg
+              className="nav-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 3h14v18l-7-4-7 4V3Z" />
+              <path d="M9 7h6M9 11h6" />
+            </svg>
             {language === 'ru' ? 'Мои рецепты' : 'My recipes'}
           </NavLink>
-          <NavLink to="/ui">UI Lab</NavLink>
+          <NavLink to="/ui">
+            <svg
+              className="nav-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 3h6M10 3v7l-6 9a1.3 1.3 0 0 0 1 2h14a1.3 1.3 0 0 0 1-2l-6-9V3M7 16h10" />
+              <path d="M10 13h.01M14 18h.01" />
+            </svg>
+            UI Lab
+          </NavLink>
         </nav>
         <div className="header-actions">
           <button

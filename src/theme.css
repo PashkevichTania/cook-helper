@@ -359,3 +359,21 @@
     gap: 8px;
   }
 }
+
+.dark .zone-add {
+  background: #193e3b;
+  color: #b8f5e6;
+  border-color: #65bda8;
+}
+.dark .zone-add:hover {
+  background: #28594f;
+  color: #ffffff;
+  border-color: #b8f5e6;
+}
+.dark .zone-add:focus-visible {
+  outline-color: #b8f5e6;
+}
+.dark .expired-stat {
+  background: #492b32;
+  color: #ffadb4;
+}
